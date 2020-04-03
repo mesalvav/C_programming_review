@@ -1,0 +1,8 @@
+# Generated files
+bin/
+gen/
+out/
+obj/
+
+Data_Sctructures.cbp
+Data_Sctructures.depend
