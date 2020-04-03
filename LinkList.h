@@ -66,7 +66,7 @@ void insertDataToNthPosition(struct Node** head, int dataToAdd, int NthPosition)
     }
 }
 
-void reverse_list(struct Node** head){
+void iteratively_reverse_list(struct Node** head){
     struct Node* current = *head;
     struct Node* next = NULL;
     struct Node* previous = NULL;
@@ -81,5 +81,14 @@ void reverse_list(struct Node** head){
     *head = previous;
 }
 
+void print_reverse_list_recursively(struct Node* headNode){
 
+    struct Node* current = headNode;
+   if (current == NULL){return;}
+
+    struct Node* nextNode = current->next;
+    print_reverse_list_recursively(nextNode);
+    printf("value=%d\n", current->data);
+
+}
 #endif // LINKLIST_H_INCLUDED
