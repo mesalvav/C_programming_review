@@ -2,21 +2,8 @@
 #include <stdlib.h>
 #include "LinkList.h"
 
-void recursively_reverse_list(struct Node** head){
 
-    if((*head)->next == NULL ){
-        (*head) = (*head);
-        return;
-    }
-   // printf("node data = %d\n", (*head)->data);
-    struct Node* nextNode = (*head)->next;
-    recursively_reverse_list(&nextNode);
-
-    nextNode->next = (*head);
-    (*head)->next = NULL;
-}
-
-struct Node* recursively_reverse_list2(struct Node** head){
+struct Node* recursively_reverse_list(struct Node** head){
 
    struct Node* currentNode = (*head);
    printf("value before = %d\n", currentNode->data);
@@ -30,7 +17,7 @@ struct Node* recursively_reverse_list2(struct Node** head){
 
     (*head) = (*head)->next;
 
-    struct Node* returnedNode = recursively_reverse_list2(head);
+    struct Node* returnedNode = recursively_reverse_list(head);
 
     returnedNode->next = currentNode;
     currentNode->next = NULL;
@@ -62,7 +49,7 @@ int main()
      printf("= = = = =\n");
     printf("\n");
 
-    recursively_reverse_list2(&nodeHead);
+    recursively_reverse_list(&nodeHead);
     printf("= = = = =\n");
     print_list(nodeHead);
    printf("= = = = =\n");
