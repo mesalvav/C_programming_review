@@ -18,7 +18,7 @@ struct Node* recursively_reverse_list(struct Node** head){
     (*head) = (*head)->next;
 
     struct Node* returnedNode = recursively_reverse_list(head);
-
+// why ? switching this 2 lines change the result
     returnedNode->next = currentNode;
     currentNode->next = NULL;
 
@@ -43,14 +43,16 @@ int main()
     addNodeToBegginingOfList(&nodeHead, createNode(5));
 
     insertDataToNthPosition(&nodeHead, 888, 1);
-    printf("= = = = =\n");
+    printf("original list = = = = =\n");
     print_list(nodeHead);
 
      printf("= = = = =\n");
     printf("\n");
-
+printf("list step by step = = = = =\n");
     recursively_reverse_list(&nodeHead);
     printf("= = = = =\n");
+    printf("\n");
+    printf("reversed result= = = = =\n");
     print_list(nodeHead);
    printf("= = = = =\n");
     return 0;
