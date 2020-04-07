@@ -1,5 +1,6 @@
 #ifndef LINKLIST_H_INCLUDED
 #define LINKLIST_H_INCLUDED
+
 struct Node {
     int data;
     struct Node* next;
@@ -91,4 +92,29 @@ void print_reverse_list_recursively(struct Node* headNode){
     printf("value=%d\n", current->data);
 
 }
+
+
+struct Node* recursively_reverse_list(struct Node** head){
+
+   struct Node* currentNode = (*head);
+
+   // printf("value before = %d\n", currentNode->data);
+    if ((*head)->next->next == NULL){
+        (*head)->next->next = (*head);
+        (*head) = (*head)->next;
+        (*head)->next->next = NULL;
+       // printf("value head = %d\n", (*head)->data);
+        return (*head)->next;
+    }
+
+    (*head) = (*head)->next;
+
+    struct Node* returnedNode = recursively_reverse_list(head);
+// why ? switching this 2 lines below change the result
+    returnedNode->next = currentNode;
+    currentNode->next = NULL;
+   // returnedNode->next = currentNode;
+
+}
+
 #endif // LINKLIST_H_INCLUDED

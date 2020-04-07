@@ -1,59 +1,100 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include "LinkList.h"
+#include "BStree.h"
+#include "QueueInt.h"
 
+typedef struct QueueNodeBStree {
+        BStree* treedata;
+        struct QueueNodeBStree* next;
+    } TQnode;
 
-struct Node* recursively_reverse_list(struct Node** head){
+TQnode* frontTQ = NULL;
+TQnode* rearTQ = NULL;
 
-   struct Node* currentNode = (*head);
-   printf("value before = %d\n", currentNode->data);
-    if ((*head)->next->next == NULL){
-        (*head)->next->next = (*head);
-        (*head) = (*head)->next;
-        (*head)->next->next = NULL;
-        printf("value head = %d\n", (*head)->data);
-        return (*head)->next;
+void Enqueue_TQnode(BStree* nodex){
+    TQnode* tempTQ = (TQnode*)malloc(sizeof(TQnode));
+    tempTQ->treedata = nodex;
+    tempTQ->next = NULL;
+
+    if(frontTQ == NULL && rearTQ == NULL){
+        frontTQ = rearTQ = tempTQ;
+        return ;
+    }
+    rearTQ->next = tempTQ;
+    rearTQ = rearTQ->next;
+}
+
+void Dequeue_TQnode(){
+    TQnode* tempy = frontTQ;
+    if (tempy == NULL){
+        printf("Empty Queue!\n");
+        return;
+    } else {
+        frontTQ = frontTQ->next;
     }
 
-    (*head) = (*head)->next;
-
-    struct Node* returnedNode = recursively_reverse_list(head);
-// why ? switching this 2 lines change the result
-    returnedNode->next = currentNode;
-    currentNode->next = NULL;
-
+    free(tempy);
 }
+void print_TQ(){
+    if(frontTQ == NULL){
+        printf("Noting Empty TQ queue..!\n");
+        return;
+    }
+
+    TQnode* tempi = frontTQ;
+    while(tempi != NULL){
+        printf("TQ value= %d\n", tempi->treedata->data);
+        tempi = tempi->next;
+    }
+}
+
+void LevelOrder(BStree * root){
+        if (root == NULL)return;
+
+        Enqueue_TQnode(root);
+printf("root: %d\n", root->data);
+        while( frontTQ != NULL){
+
+          if(root->leftNode != NULL){
+            LevelOrder(root->leftNode);
+          }
+          if(root->rightNode != NULL){
+            LevelOrder(root->rightNode);
+          }
+          Dequeue_TQnode();
+
+        }
+   }
 
 int main()
 {
-    struct Node* nodeHead = NULL;
-
-    nodeHead = createNode(11);
-    nodeHead->next = NULL;
-
-    struct Node* nodeTwo = createNode(22);
-    nodeTwo->next = NULL;
-    nodeHead->next = nodeTwo;
-
-    struct Node* nodeThree = createNode(33);
-    nodeThree->next = NULL;
-    nodeTwo->next = nodeThree;
-
-    addNodeToBegginingOfList(&nodeHead, createNode(4));
-    addNodeToBegginingOfList(&nodeHead, createNode(5));
-
-    insertDataToNthPosition(&nodeHead, 888, 1);
-    printf("original list = = = = =\n");
-    print_list(nodeHead);
-
-     printf("= = = = =\n");
-    printf("\n");
-printf("list step by step = = = = =\n");
-    recursively_reverse_list(&nodeHead);
+    BStree* root = NULL;
+    root = insertBSTnode(root, 14);
+    printf("root data= %d\n", root->data);
     printf("= = = = =\n");
-    printf("\n");
-    printf("reversed result= = = = =\n");
-    print_list(nodeHead);
-   printf("= = = = =\n");
+
+    root = insertBSTnode(root, 8);
+    root = insertBSTnode(root, 19);
+    root = insertBSTnode(root, -3);
+    root = insertBSTnode(root, 0);
+    root = insertBSTnode(root, -7);
+root = insertBSTnode(root, 11);
+
+printf("NOde queues +=++==++==\n");
+
+Enqueue_TQnode(root);
+Enqueue_TQnode(root->leftNode);
+Enqueue_TQnode(root->rightNode);
+/*
+print_TQ();
+Dequeue_TQnode();
+Dequeue_TQnode();
+
+print_TQ();
+*/
+
+LevelOrder(root);
     return 0;
 }
